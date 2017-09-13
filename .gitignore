@@ -1,11 +1,13 @@
 *.swp
 stroom-content-target
 target
+classes
 stroom-content-artifacts
 node_modules
 _book
 _unused
 .idea
+*.iml
 source/*/build
 
 #Gradle stuff (from https://github.com/github/gitignore/blob/master/Gradle.gitignore)

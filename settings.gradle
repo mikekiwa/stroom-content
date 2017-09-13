@@ -9,3 +9,4 @@ new File('source').eachDir { it ->
     project(":$projectName").projectDir = new File("./source/$projectName")
 }
 
+include 'migration'
