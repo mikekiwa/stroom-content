@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class MigrateContent {
@@ -42,14 +43,14 @@ public class MigrateContent {
         }
 
         try (final Stream<Path> stream = Files.walk(path)) {
-            stream
+            final List<Path> list = stream
                     .filter(p -> {
                         final String fileName = p.getFileName().toString();
                         return fileName.matches("([^.]*\\.){2,}xml") &&
-                                fileName.matches(".*[A-Z][a-z]+\\.xml$") &&
-                                !fileName.matches(UUID_REGEX + "\\..*");
+                                fileName.matches(".*\\.[A-Z][a-z]+\\.xml$");
                     })
-                    .forEach(MigrateContent::process);
+                    .collect(Collectors.toList());
+            list.forEach(MigrateContent::process);
         } catch (final IOException e) {
             System.err.println(e.getMessage());
         }
@@ -88,7 +89,8 @@ public class MigrateContent {
             // Rename related files.
             try (final Stream<Path> stream = Files.list(path.getParent())) {
                 stream
-                        .filter(p -> p.getFileName().toString().startsWith(fileStem + "."))
+                        .filter(p -> p.getFileName().toString().startsWith(fileStem + ".") &&
+                                !p.getFileName().toString().startsWith(newFileStem))
                         .forEach(p -> {
                             try {
                                 final String extension = p.getFileName().toString().substring(fileStem.length());
