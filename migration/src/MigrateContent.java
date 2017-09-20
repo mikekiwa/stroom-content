@@ -47,7 +47,7 @@ public class MigrateContent {
                     .filter(p -> {
                         final String fileName = p.getFileName().toString();
                         return fileName.matches("([^.]*\\.){2,}xml") &&
-                                fileName.matches(".*\\.[A-Z][a-z]+\\.xml$");
+                                fileName.matches(".*\\.[A-Z]+[a-z]+\\.xml$");
                     })
                     .collect(Collectors.toList());
             list.forEach(MigrateContent::process);
